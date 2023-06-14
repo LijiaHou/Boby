@@ -1,3 +1,23 @@
+# 遇到的问题
+eject之后，js文件都会有一个eslint的报错
+```js
+Parsing error: [BABEL] E:\desk\ReactAndVue\Boby\src\App.js: Using `babel-preset-react-app` requires that you specify `NODE_ENV` or `BABEL_ENV` environment variables. Valid values are "development", "test", and "production". Instead, received: undefined. (
+```
+
+在package.json的eslintConfig下添加
+```js
+"parserOptions": {
+      "babelOptions": {
+        "presets": [
+          ["babel-preset-react-app", false],
+          ["babel-preset-react-app/prod"]
+        ]
+      }
+    }
+```
+
+问题描述 https://github.com/facebook/create-react-app/issues/12070
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -1,3 +1,4 @@
+import './test.scss'
 
 function App() {
   return (
