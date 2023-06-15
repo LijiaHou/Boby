@@ -14,9 +14,9 @@ require('colors')
 
 const gitCommand = (isPull) => new Promise((resolve) => {
     const command = 'git'
-    const commandOpt = isPull ? 'pull' : 'push'
-    const child = spawn(command, [commandOpt])
-    console.log('执行：'.green, command, commandOpt);
+    const commandOpt = isPull ? ['pull', 'github', 'master'] : ['push', 'github', 'master']
+    const child = spawn(command, commandOpt)
+    console.log('执行：'.green, command, ...commandOpt);
     child.stdout.on('data', data => {
         console.log(`stdout: ${data}`.green);
     })
