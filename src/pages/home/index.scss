@@ -1,0 +1,13 @@
+.P-home {
+  height: 100vh;
+  background: linear-gradient(#f48c8d,#f4c58d);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  h1 {
+    color: #fff;
+    margin: 50px 0 20px;
+    font-size: 40px;
+  }
+}

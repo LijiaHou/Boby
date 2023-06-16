@@ -1,4 +1,7 @@
 # 遇到的问题
+
+## eslint报错
+
 eject之后，js文件都会有一个eslint的报错
 ```js
 Parsing error: [BABEL] E:\desk\ReactAndVue\Boby\src\App.js: Using `babel-preset-react-app` requires that you specify `NODE_ENV` or `BABEL_ENV` environment variables. Valid values are "development", "test", and "production". Instead, received: undefined. (
@@ -17,6 +20,29 @@ Parsing error: [BABEL] E:\desk\ReactAndVue\Boby\src\App.js: Using `babel-preset-
 ```
 
 问题描述 https://github.com/facebook/create-react-app/issues/12070
+
+## webpack路径别名
+
+为了让项目的路径看起来更加清晰简洁，我们在webpack.config.js文件中alias下增加这样一条配置：
+```js
+'@': path.join(__dirname, '..', 'src'),
+```
+这样我们可以通过绝对路径来引用文件，而不是数不清的../../../...
+```js
+import Home from '@/pages/home';
+```
+当然只在webpack配置是没有语法提示的，我们还需要在根目录创建```jsconfig.json```文件
+```js
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
+```
+详细配置见vscode文档 https://code.visualstudio.com/docs/languages/jsconfig
 
 # Getting Started with Create React App
 
