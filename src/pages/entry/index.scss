@@ -1,0 +1,10 @@
+.M-entry {
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+
+    .main-container {
+        position: relative;
+        flex: 1;
+    }
+}

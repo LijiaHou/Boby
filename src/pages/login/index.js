@@ -1,8 +1,11 @@
 import {Button, Input} from 'antd'
 import imgLogo from './logo.png'
+import {useNavigate} from 'react-router-dom'
 import './index.scss'
 
 const Login = () => {
+  const navigate = useNavigate()
+
   return (
     <div className="P-login">
       <img src={imgLogo} alt="" className='logo' />
@@ -13,7 +16,7 @@ const Login = () => {
         <Input.Password placeholder='账号' />
       </div>
       <div className='ipt-con'>
-        <Button type="primary" block>
+        <Button type="primary" block onClick={() => navigate('/home')}>
           登录
         </Button>
       </div>
