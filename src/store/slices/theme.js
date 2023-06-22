@@ -5,8 +5,6 @@ const sessionTheme = JSON.parse(window.localStorage.getItem(globalConfig.SESSION
 
 const initTheme = sessionTheme ? sessionTheme : globalConfig.initTheme
 
-console.log(initTheme)
-
 const initialState = {
     dark: initTheme.dark,
     colorPrimary: initTheme.colorPrimary,
