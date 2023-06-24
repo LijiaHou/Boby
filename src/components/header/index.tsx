@@ -1,3 +1,4 @@
+import React from 'react'
 import { Button, Card} from 'antd'
 import {useDispatch, useSelector} from 'react-redux'
 import {setColorPrimary, setDark} from '@/store/slices/theme'
@@ -5,7 +6,7 @@ import './index.scss'
 
 const Header = ({title}) => {
     const dispatch = useDispatch()
-    const theme = useSelector((state) => state.theme)
+    const theme = useSelector((state: any) => state.theme)
 
     return (
         <Card className='M-header'>

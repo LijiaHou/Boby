@@ -1,3 +1,4 @@
+import React from "react";
 import {Outlet, useLocation} from 'react-router-dom'
 import Header from '@/components/header'
 import {useSelector} from 'react-redux'
@@ -10,7 +11,7 @@ const Entry = () => {
 
     const location = useLocation()
 
-    const globalTheme = useSelector((state) => state.theme)
+    const globalTheme = useSelector((state: any) => state.theme)
 
     let antdTheme = {
         algorithm: globalTheme.dark ? darkAlgorithm : defaultAlgorithm

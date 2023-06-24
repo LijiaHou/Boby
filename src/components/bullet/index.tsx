@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react"
-import ReactDOM from 'react-dom/client'
+import React, { useEffect, useState, useRef } from "react"
 import { Button } from "antd"
 import './index.scss'
 
@@ -34,29 +33,28 @@ function Bullet({spacingTime = 1000, appearTime = 4000, list = ['法克鱿', '�
     * 不过需要注意的是，无论如何宽度也需要在DOM渲染后才能得到
   */
 
-  const [bulletList, setBulletList] = useState([])
+  let bulletList:Array<HTMLDivElement> = []
+  const rootEle = useRef<HTMLDivElement>(null)
+  const rootWidth = useRef(0)
 
   const createBullets = () => {
-    const root = document.querySelector('.BulletScreen')
-    const templist = list.map(text => {
+    bulletList = list.map(text => {
       // 创建弹幕，让弹幕处于一个初始的状态，隐藏在screen的右侧！
       const div = document.createElement('div')
       div.className = 'BulletScreen-item'
       div.innerHTML = text
       div.style.position = 'absolute'
       div.style.top = '0'
-      div.style.left = '-100px'
-      root.appendChild(div)
-
-      
+      div.style.left = `${rootWidth.current}px`
+      div.style.whiteSpace = 'nowrap'
+      rootEle.current?.appendChild(div)
       return div
     })
-    setBulletList(templist)
   }
 
   const letBulletMove = () => {
-    const bullets = Array.from(document.getElementsByClassName('BulletScreen-item'))
-    // const bullets = bulletList
+    // const bullets = Array.from(document.getElementsByClassName('BulletScreen-item'))
+    const bullets = bulletList
     const sendBullet = () => {
       if (bullets.length <= 0) {
         return
@@ -66,13 +64,15 @@ function Bullet({spacingTime = 1000, appearTime = 4000, list = ['法克鱿', '�
       // setTimeout(() => {
       //   bullet.remove()
       // }, appearTime);
-      bullet.addEventListener('transitionend', () => {
-        bullet.removeEventListener('transitionend')  //部分浏览器不移除的话会泄露内存
-        bullet.remove()
-      })
+      // bullet?.addEventListener('transitionend', () => {
+      //   bullet.removeEventListener('transitionend', () => {})  //部分浏览器不移除的话会泄露内存
+      //   bullet.remove()
+      // })
       
-      bullet.style.transition = `all ${appearTime/1000}s linear`
-      bullet.style.transform = 'translateX(600px)'
+      if (bullet) {
+        bullet.style.transition = `all ${appearTime/1000}s linear`
+        bullet.style.transform = `translateX(-${rootWidth.current + bullet.getBoundingClientRect().width}px)`
+      }
       
       // 间隔时间后发送下一条
       setTimeout(() => {
@@ -82,6 +82,15 @@ function Bullet({spacingTime = 1000, appearTime = 4000, list = ['法克鱿', '�
     
     sendBullet()
   }
+
+  // 初始化滚动屏幕的宽度
+  const init = () => {
+    rootWidth.current = rootEle.current?.getBoundingClientRect().width || 0
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
 
   useEffect(() => {
     createBullets()
@@ -101,6 +110,7 @@ function Bullet({spacingTime = 1000, appearTime = 4000, list = ['法克鱿', '�
           height: '100px',
           border: 'solid 1px red'
         }}
+        ref={rootEle}
       />
       {/* 测试用按钮 */}
       <Button

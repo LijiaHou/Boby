@@ -1,4 +1,5 @@
 import {Button, Input} from 'antd'
+import React from 'react'
 import imgLogo from './logo.png'
 import {useNavigate} from 'react-router-dom'
 import './index.scss'

@@ -401,6 +401,7 @@ module.exports = function (webpackEnv) {
                 and: [/\.(ts|tsx|js|jsx|md|mdx)$/],
               },
             },
+            { test: /\.tsx?$/, loader: require.resolve('ts-loader') },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
