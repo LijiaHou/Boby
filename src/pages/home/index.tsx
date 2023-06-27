@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Input } from "antd";
 import {useNavigate} from 'react-router-dom'
 import Bullet from '@/components/bullet'
+import ToastModal from '@/components/ToastModal'
 import './index.scss'
 
 const {Search} = Input
@@ -10,16 +11,6 @@ const Home = () => {
   const navigate = useNavigate()
   const bulletInstance = useRef(null)
   const [input, setInput] = useState('')
-
-  useEffect(() => {
-    const home = document.querySelector('.P-home')
-    const h1 = document.querySelector('h1')
-    home.addEventListener('click', () => console.log('click home'))
-    h1.addEventListener('click', (e) => {
-      e.stopPropagation()
-      console.log('click h1')
-    })
-  }, [])
 
   return (
     <div className="P-home">
@@ -49,6 +40,20 @@ const Home = () => {
           style={{marginTop: 10}}
         />
       </div>
+      <Button type="primary" onClick={() =>  
+        ToastModal({contentFunc: ({hideToast}) => {
+          return (
+            <div className="Modal">
+              <div className="Modal-title">MODAL</div>
+              <p>wow，我是弹窗啊</p>
+              <Button onClick={() => {
+                console.log('button');
+                
+                hideToast()
+              }} type="primary">关闭</Button>
+            </div>
+          )
+        }})}>弹窗</Button>
     </div>
   )
 }

@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import {createRoot} from 'react-dom/client'
-import ReactDom from 'react-dom'
 import './index.scss'
 
 /**
@@ -135,6 +134,7 @@ function Bullet({
   useEffect(() => {
     init()
     startBullet()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

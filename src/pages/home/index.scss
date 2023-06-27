@@ -1,5 +1,5 @@
 .P-home {
-  height: 100vh;
+  height: 100%;
   background: linear-gradient(#f48c8d,#f4c58d);
   display: flex;
   flex-flow: column;
@@ -13,5 +13,30 @@
 
   .bullet {
     margin: 10px;
+  }
+}
+.Modal {
+  position: relative;
+  width: 237px;
+  min-height: 312px;
+  box-sizing: border-box;
+  background: url(./images/底板弹窗@2x.png) no-repeat center / 100% 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+
+  &-title {
+    font-size: 14px;
+    font-family: SFPro-Semibold, SFPro;
+    font-weight: 600;
+    color: #FFFAB4;
+    line-height: 16px;
+    margin: 20px;
+    text-align: center;
+  }
+  .ant-btn {
+    margin-bottom: 50px;
   }
 }
