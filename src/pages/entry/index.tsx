@@ -3,6 +3,7 @@ import {Outlet, useLocation} from 'react-router-dom'
 import Header from '@/components/header'
 import {useSelector} from 'react-redux'
 import {ConfigProvider, theme} from 'antd'
+import {Toaster} from 'react-hot-toast'
 import './index.scss'
 
 const {darkAlgorithm, defaultAlgorithm} = theme
@@ -24,6 +25,7 @@ const Entry = () => {
                 <div className='main-container'>
                     <Outlet />
                 </div>
+                <Toaster />
             </div>
         </ConfigProvider>
     )

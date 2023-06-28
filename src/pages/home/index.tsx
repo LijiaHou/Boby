@@ -3,6 +3,7 @@ import { Button, Input } from "antd";
 import {useNavigate} from 'react-router-dom'
 import Bullet from '@/components/bullet'
 import ToastModal from '@/components/ToastModal'
+import toast from 'react-hot-toast'
 import './index.scss'
 
 const {Search} = Input
@@ -40,7 +41,7 @@ const Home = () => {
           style={{marginTop: 10}}
         />
       </div>
-      <Button type="primary" onClick={() =>  
+      <Button type="primary" onClick={() =>  {
         ToastModal({contentFunc: ({hideToast}) => {
           return (
             <div className="Modal">
@@ -53,7 +54,8 @@ const Home = () => {
               }} type="primary">关闭</Button>
             </div>
           )
-        }})}>弹窗</Button>
+        }})
+      }}>弹窗</Button>
     </div>
   )
 }
