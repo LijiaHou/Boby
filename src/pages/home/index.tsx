@@ -47,15 +47,20 @@ const Home = () => {
             <div className="Modal">
               <div className="Modal-title">MODAL</div>
               <p>wow，我是弹窗啊</p>
-              <Button onClick={() => {
-                console.log('button');
-                
-                hideToast()
-              }} type="primary">关闭</Button>
+              <Button onClick={hideToast} type="primary">关闭</Button>
             </div>
           )
         }})
       }}>弹窗</Button>
+
+      <PullupRank
+        data={data}
+        pullupEle="body"
+        getNext={getNext}
+        renderList={(list) => {
+          return <>{data.list?.map((item) => renderListItem(item))}</>
+        }}
+      />
     </div>
   )
 }

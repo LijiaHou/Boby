@@ -1,6 +1,5 @@
 // 弹窗 组件
 import React from "react"
-import {createRoot} from 'react-dom/client'
 import toast from 'react-hot-toast'
 import './index.scss'
 
@@ -32,7 +31,7 @@ const ToastModal = (
         <div
           className="ToastModal_inner"
           onClick={(e) => {
-
+            e.stopPropagation()
           }}
         >
           {contentFunc({hideToast: handleClose})}
@@ -43,8 +42,6 @@ const ToastModal = (
     duration: Infinity
   }
   )
-
-  return 1
 }
 
 export default ToastModal
