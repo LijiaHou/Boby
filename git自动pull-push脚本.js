@@ -31,6 +31,7 @@ const gitCommand = (isPull) => new Promise((resolve) => {
 })
 
 const excuteUpdate = async (isPull) => {
+    const start = new Date().getTime()
     let code = 1
     while (code) {
         code = await gitCommand(isPull)
@@ -41,7 +42,10 @@ const excuteUpdate = async (isPull) => {
             }, 1000);
         })
     }
-    console.log('已完成!'.green);
+    const end = new Date().getTime()
+    const time = end-start === 0 ? 0 :(end-start)/1000
+    console.log(`已完成!`.green);
+    console.log(`用时${time}秒`.green);
 }
 
 program

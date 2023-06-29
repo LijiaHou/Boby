@@ -15,16 +15,14 @@ const ToastModal = (
     maskClosable?: boolean
   }) => {
 
-  const handleClose = () => {
-    console.log('hide');
-    
-    toast.remove()
-  }
 
   toast.custom((t) => {
+    const handleClose = () => {
+      toast.remove(t.id)
+    }
     return (
       <div  
-        className="Toast_mask"
+        className="ToastModal_mask"
         onClick={() => {
           if (maskClosable) {
             handleClose()
@@ -32,7 +30,7 @@ const ToastModal = (
         }}
       >
         <div
-          className="Toast_inner"
+          className="ToastModal_inner"
           onClick={(e) => {
 
           }}
@@ -41,7 +39,10 @@ const ToastModal = (
         </div>
       </div>
     )
-  })
+  }, {
+    duration: Infinity
+  }
+  )
 
   return 1
 }
