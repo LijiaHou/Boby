@@ -40,3 +40,45 @@
     margin-bottom: 50px;
   }
 }
+
+.ListItem {
+  position: relative;
+  height: 50px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  padding: 5px 16px 5px 11px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #4D21A6;
+    left: 0;
+    bottom: 0;
+    transform: scaleY(0.5);
+  }
+
+  .rank {
+    width: 40px;
+    font-size: 16px;
+    font-family: serif;
+    color: #B9B3FF;
+    text-align: center;
+  }
+
+  .avatar {
+    width: getSize1(40);
+    height: getSize1(40);
+    border-radius: 50%;
+
+    margin: 0 10px;
+  }
+
+  .name {
+    font-size: 14px;
+    font-family: SFPro-Regular, SFPro;
+    color: #B9B3FF;
+  }
+}

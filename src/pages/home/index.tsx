@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Input } from "antd";
 import {useNavigate} from 'react-router-dom'
 import Bullet from '@/components/bullet'
 import ToastModal from '@/components/ToastModal'
-import toast from 'react-hot-toast'
+import PullupRank, {useRankList} from '@/components/PullupRank'
 import './index.scss'
 
 const {Search} = Input
@@ -12,6 +12,21 @@ const Home = () => {
   const navigate = useNavigate()
   const bulletInstance = useRef(null)
   const [input, setInput] = useState('')
+  const {data, getNext} = useRankList()
+
+  useEffect(() => {
+    getNext()
+  }, [])
+
+  const renderListItem = (item, idx) => {
+    return (
+      <div className="ListItem" key={idx}>
+        <div className="rank">{item.rank}</div>
+        <img className="avatar" src={item.avatar} alt="" />
+        <div className="name">{item.name}</div>
+      </div>
+    )
+  }
 
   return (
     <div className="P-home">
@@ -58,7 +73,11 @@ const Home = () => {
         pullupEle="body"
         getNext={getNext}
         renderList={(list) => {
-          return <>{data.list?.map((item) => renderListItem(item))}</>
+          return (
+          <>
+            {list?.map((item, idx) => renderListItem(item, idx))}
+            {data.loading && 'loading...'}
+          </>)
         }}
       />
     </div>
