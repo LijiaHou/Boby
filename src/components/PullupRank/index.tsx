@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import './index.scss'
 
 const Index = ({data, pullupEle, getNext, renderList}) => {
   const hasReachBottom = () => {
     const container = document.querySelector('.RankList')
-    return container.scrollTop === container.scrollHeight - container.clientHeight
+    const offset = 20
+    return container.scrollTop >= container.scrollHeight - container.clientHeight - offset
   }
 
   useEffect(() => {
@@ -67,25 +68,37 @@ export const useRankList = () => {
     loading: false,
   }
   const [data, setData] = useState(orignData)
+  const loading = useRef(false)
 
   const getNext = async () => {
-    setData(pre => ({
-      ...pre,
-      loading: true
-    }))
-    await new Promise((resolve) => {
-      setTimeout(() => resolve(1), 1500)
-    })
-    setData(pre => {
-      return {
+    if (loading.current) {
+      return
+    }
+    try {
+      setData(pre => ({
         ...pre,
-        list: pre.list.concat(testList.map((item, idx) => ({
-          ...item,
-          rank: pre.list[pre.list.length - 1].rank + idx + 1
-        }))),
-        loading: false
-      }
-    })
+        loading: loading.current = true
+      }))
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(1), 1500)
+      })
+      setData(pre => {
+        return {
+          ...pre,
+          list: pre.list.concat(testList.map((item, idx) => ({
+            ...item,
+            rank: pre.list[pre.list.length - 1].rank + idx + 1
+          })))
+        }
+      })
+    } catch (error) {
+      
+    } finally {
+      setData(pre => ({
+        ...pre,
+        loading: loading.current = false
+      }))
+    }
   }
   return {data, getNext}
 }
