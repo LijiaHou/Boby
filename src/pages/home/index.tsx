@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Input } from "antd";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import { Button, Input, message } from "antd";
 import {useNavigate} from 'react-router-dom'
 import Bullet from '@/components/bullet'
 import ToastModal from '@/components/ToastModal'
-import PullupRank, {useRankList} from '@/components/PullupRank'
+import PullupRank from '@/components/PullupRank'
+import {useRankList} from '@/components/PullupRank/useRankList'
+import TestMemoList from './list'
 import './index.scss'
 
 const {Search} = Input
@@ -27,6 +29,31 @@ const Home = () => {
       </div>
     )
   }
+
+  // 如果没有memo，TestMemoList 会多次重复渲染
+  const list = 
+    useMemo(() => 
+      [
+        {name: '杰洛特', id: 0}, 
+        {name: '叶奈法', id: 1}, 
+        {name: '翠斯', id: 2}, 
+        {name: '兰伯特', id: 3}
+      ]
+    , [])
+
+  // 参数是函数也得缓存一下，否则每次重新渲染，都会创建新的函数
+  // const onListClick = 
+  //   useMemo(() => {
+  //     return (v) => {
+  //       message.info(v.name)
+  //     }
+  //   }, [])
+
+  // 虽然 useMemo 也可以缓存函数，但显然 useCallback 不需要嵌套
+  const onListClick = 
+    useCallback((v) => {
+      message.info(v.name)
+    }, [])
 
   return (
     <div className="P-home">
@@ -80,6 +107,9 @@ const Home = () => {
           </>)
         }}
       />
+
+      <TestMemoList list={list} onClick={onListClick} />
+      
     </div>
   )
 }

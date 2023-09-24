@@ -1,106 +1,80 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState, useMemo, useRef } from "react"
+import {RankData} from './useRankList'
 import './index.scss'
 
-const Index = ({data, pullupEle, getNext, renderList}) => {
+// 列表项高度
+const ITEM_HEIGHT = 200
+// 预加载个数
+const PRE_LOAD_NUM = 5
+
+const PullRank = ({data, pullupEle, getNext, renderList}: 
+  {data: RankData, pullupEle: string, getNext: () => any, renderList: (list: RankData['list']) => any}
+) => {
+  
+  // 列表（包括滚动）的高度
+  const scrollViewHeight = data.list?.length * ITEM_HEIGHT
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  
+  const [showRange, setShowRange] = useState({start: 0, end: 10})
+  
+  // 正在展示的列表
+  const viewList = useMemo(() => data.list.slice(showRange.start, showRange.end), 
+  [showRange.start, showRange.end, data.list])
+
+  // 需要撑起的高度
+  const scrollOffsetTop = useMemo(() => showRange.start * ITEM_HEIGHT, [showRange.start])
+
   const hasReachBottom = () => {
     const container = document.querySelector('.RankList')
     const offset = 20
     return container.scrollTop >= container.scrollHeight - container.clientHeight - offset
   }
 
+  const calcShowRange = () => {
+    const container = containerRef.current
+    const newScrollTop = Math.floor(container?.scrollTop)
+    const start = Math.ceil(newScrollTop / ITEM_HEIGHT) - PRE_LOAD_NUM
+    const end = Math.ceil((newScrollTop + container?.getBoundingClientRect().height) / ITEM_HEIGHT) + PRE_LOAD_NUM
+    
+    console.log('newScrollTop', newScrollTop);
+    console.log('start', start);
+    console.log('end', end);
+    
+    setShowRange({
+      start: start < 0 ? 0 : start,
+      end: end >  data.list.length ? data.list.length : end
+    })
+  }
+
   useEffect(() => {
-    const container = document.querySelector('.RankList')
+    const container = containerRef.current
     container.addEventListener('scroll', () => {
+      calcShowRange()
       if (hasReachBottom()) {
         getNext()
       }
     })
     return container.removeEventListener('scroll', null)
-  }, [])
+  }, [data])
+  
+  console.log('viewList', viewList);
   
   return(
-    <div className="RankList">
-      <div className="RankInner">
-        {renderList(data.list)}
+    <div className="RankList" ref={containerRef}>
+      <div
+        className="RankInner"
+        style={
+          {
+            height: scrollViewHeight,
+            paddingTop: scrollOffsetTop,
+          }
+        }
+      >
+        {renderList(viewList)}
       </div>
     </div>
   )
 }
 
-export const useRankList = () => {
-  const testList = [
-    {
-      avatar:
-        'http://me-media-gateway.srv.test.ixiaochuan.cn/img/png/id/4302911',
-      name: 'Jack',
-      rank: 1,
-      rounds: 130,
-      mid: 1122,
-    },
-    {
-      avatar:
-        'http://me-media-gateway.srv.test.ixiaochuan.cn/img/png/id/4300875',
-      name: 'Lady',
-      rank: 2,
-      rounds: 30,
-      mid: 11232,
-    },
-    {
-      avatar:
-        'http://me-media-gateway.srv.test.ixiaochuan.cn/img/png/id/4300875',
-      name: 'Wakaa',
-      rank: 3,
-      rounds: 99,
-      mid: 11222,
-    },
-    {
-      avatar:
-        'http://me-media-gateway.srv.test.ixiaochuan.cn/img/png/id/4302911',
-      name: 'Jack',
-      rank: 4,
-      rounds: 8,
-      mid: 11242,
-    },
-  ]
-  const orignData = {
-    list: testList,
-    more: true,
-    loading: false,
-  }
-  const [data, setData] = useState(orignData)
-  const loading = useRef(false)
-
-  const getNext = async () => {
-    if (loading.current) {
-      return
-    }
-    try {
-      setData(pre => ({
-        ...pre,
-        loading: loading.current = true
-      }))
-      await new Promise((resolve) => {
-        setTimeout(() => resolve(1), 1500)
-      })
-      setData(pre => {
-        return {
-          ...pre,
-          list: pre.list.concat(testList.map((item, idx) => ({
-            ...item,
-            rank: pre.list[pre.list.length - 1].rank + idx + 1
-          })))
-        }
-      })
-    } catch (error) {
-      
-    } finally {
-      setData(pre => ({
-        ...pre,
-        loading: loading.current = false
-      }))
-    }
-  }
-  return {data, getNext}
-}
-
-export default Index
+export default PullRank

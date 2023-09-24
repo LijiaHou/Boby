@@ -4,6 +4,7 @@ import Login from '@/pages/login';
 import Home from '@/pages/home';
 import Entry from '@/pages/entry';
 import Account from '@/pages/account';
+import Practice from '@/pages/practice';
 
 export const globalRouters = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const globalRouters = createBrowserRouter([
       {
         path: '/account',
         element: <Account />,
+      },
+      {
+        path: '/practice',
+        element: <Practice />,
       },
       // URL没有具体路径，跳转home
       {
