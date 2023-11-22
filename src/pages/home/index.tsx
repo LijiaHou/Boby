@@ -5,7 +5,9 @@ import Bullet from '@/components/bullet'
 import ToastModal from '@/components/ToastModal'
 import PullupRank from '@/components/PullupRank'
 import {useRankList} from '@/components/PullupRank/useRankList'
+import PopUp from '@/components/PopUp'
 import TestMemoList from './list'
+import toast, { Toaster } from 'react-hot-toast'
 import './index.scss'
 
 const {Search} = Input
@@ -15,6 +17,7 @@ const Home = () => {
   const bulletInstance = useRef(null)
   const [input, setInput] = useState('')
   const {data, getNext} = useRankList()
+  const [isShowPopup, setIsShowPopup] = useState(false)
 
   useEffect(() => {
     getNext()
@@ -57,6 +60,7 @@ const Home = () => {
 
   return (
     <div className="P-home">
+      <Toaster />
       <h1>Home Page</h1>
       <div className="ipt-con">
         <Button type="primary" onClick={() => navigate('/login')}>返回登录</Button>
@@ -77,6 +81,7 @@ const Home = () => {
           size="large"
           onChange={e => setInput(e.target.value)}
           onSearch={(v) => {
+            toast("success~")
             bulletInstance.current.sendBullet(v)
             setInput('')
           }}
@@ -95,18 +100,22 @@ const Home = () => {
         }})
       }}>弹窗</Button>
 
-      <PullupRank
-        data={data}
-        pullupEle="body"
-        getNext={getNext}
-        renderList={(list) => {
-          return (
-          <>
-            {list?.map((item, idx) => renderListItem(item, idx))}
-            {data.loading && 'loading...'}
-          </>)
-        }}
-      />
+      <Button type="primary" onClick={() => setIsShowPopup(true)}>打开列表</Button>
+      <PopUp active={isShowPopup} onClose={() => setIsShowPopup(false)}>
+        <PullupRank
+          data={data}
+          pullupEle="body"
+          getNext={getNext}
+          renderList={(list) => {
+            return (
+            <>
+              {list?.map((item, idx) => renderListItem(item, idx))}
+              {data.loading && 'loading...'}
+            </>)
+          }}
+        />
+      </PopUp>
+      
 
       <TestMemoList list={list} onClick={onListClick} />
       
